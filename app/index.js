@@ -1,12 +1,19 @@
-const express = require('express');
-const cors = require("cors");
-const app = express();
+import express from 'express';
+import cors from 'cors';
+import getMockProducts from './data/mockProducts.js';
 
+const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/message", (req, res) => {
-    res.json({ message: "Hello from server!" });
+let mockProducts = getMockProducts();
+
+app.get("/health-check", (req, res) => {
+    res.json({ message: "Server is healthy!" });
+});
+
+app.get("/api/products", (req, res) => {
+    res.json({ products: mockProducts });
 });
 
 app.listen(3000, () => {
