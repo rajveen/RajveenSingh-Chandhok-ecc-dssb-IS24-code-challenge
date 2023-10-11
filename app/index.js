@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import getMockProducts from './data/mockProducts.js';
+import { randomUUID } from 'crypto';
 
 const app = express();
 app.use(cors());
@@ -21,7 +22,8 @@ app.get("/api/products", (req, res) => {
 
 // Create a new product
 app.post('/api/products', (req, res) => {
-    const newProduct = req.body;
+    let newProduct = req.body;
+    newProduct = { ...newProduct, productId: randomUUID() };
     mockProducts.push(newProduct);
     res.status(201).json(newProduct);
 });

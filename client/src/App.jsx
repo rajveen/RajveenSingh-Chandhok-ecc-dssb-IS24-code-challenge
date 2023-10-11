@@ -28,10 +28,28 @@ const handleDeleteProduct = (product) => {
   setProducts(updatedProducts);
 };
 
-  const handleCreateProduct = async (product) => {
-    setProducts((products) => [...products, product])
-    // call setIsModalOpen(false) if no error
-    setShowModal(false)
+const handleCreateProduct = async (product) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(product),
+        });
+    
+        if (!response.ok) {
+            // If the response status is not in the range 200-299, consider it an error
+            const errorMessage = `Failed to add the product: ${response.statusText}`;
+            throw new Error(errorMessage);
+        }
+    
+        const newProduct = await response.json();
+        setProducts((products) => [...products, newProduct]);
+        setShowModal(false);
+    } catch (error) {
+        // Handle and log the error
+        console.error(error);
+        throw error; // Re-throw the error for further handling or display
+    }
 }
 
 const handleUpdateProduct = async (product) => {
@@ -45,11 +63,12 @@ const handleUpdateProduct = async (product) => {
 };
 
   const handleSaveProduct = async (product) => {
-    const existingProductIds = products.map(existingProduct => existingProduct.productId)
-    if (existingProductIds.includes(product.productId)) {
-        await handleUpdateProduct(product)
+    // const existingProductIds = products.map(existingProduct => existingProduct.productId)
+    // if (existingProductIds.includes(product.productId)) {
+    if ("productId" in product) {
+        await handleUpdateProduct(product);
     } else {
-        await handleCreateProduct(product)
+        await handleCreateProduct(product);
     }
 }
 

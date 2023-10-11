@@ -9,6 +9,7 @@ import { generateUniqueID } from "./productHelper";
 const ProductModal = ({ showModal, product, onSave, onClose }) => {
     const [editedProduct, setEditedProduct] = useState(product);
     const [developers, setDevelopers] = useState(product?.developers.map((developer) => ({ id: developer, text: developer })));
+    const [error, setError] = useState(null);
 
     const handleDevelopersChange = (newDevelopers) => {
         setDevelopers(newDevelopers);
@@ -29,29 +30,42 @@ const ProductModal = ({ showModal, product, onSave, onClose }) => {
             [name]: value})
     };
 
-    const addProductIdToProduct = (product) => {
-        if (!product.productId) {
-            const id = generateUniqueID()
-            return {
-                ...product,
-                productId: id
-            }
-        }
-        return product
-    }
+    // const addProductIdToProduct = (product) => {
+    //     if (!product.productId) {
+    //         const id = generateUniqueID()
+    //         return {
+    //             ...product,
+    //             productId: id
+    //         }
+    //     }
+    //     return product
+    // }
 
-    const handleSave = () => {
+    const handleSave = async () => {
         // Include updated developers in the edited product data
         let updatedProduct = {
             ...editedProduct,
             developers: developers?.map((tag) => tag.text),
         };
 
-        // add unique Id to product
-        updatedProduct = addProductIdToProduct(updatedProduct)
+        // // add unique Id to product
+        // updatedProduct = addProductIdToProduct(updatedProduct)
 
         // Call a function to save the edited product data
-        onSave(updatedProduct);
+        try {
+            await onSave(updatedProduct);
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
+    const renderError = () => {
+        if (error) {
+            return (
+                <div className="alert alert-danger">{error}</div>
+            );
+        }
+        return null;
     };
 
     return (
@@ -60,6 +74,7 @@ const ProductModal = ({ showModal, product, onSave, onClose }) => {
                 <Modal.Title>Edit Product</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                { renderError() }
                 <form>
                     <div className="form-group">
                         <label style={{fontWeight: "bold"}}>Product Name</label>
