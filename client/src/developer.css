@@ -1,0 +1,87 @@
+/* Custom styles for ReactTags */
+.ReactTags {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 5px;
+    display: inline-block;
+    width: 100%;
+    min-height: 40px;
+    background-color: #f0f0f0; /* Grey background color */
+}
+
+.ReactTags__selected {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.ReactTags__tag {
+    background-color: #f0f0f0; /* Grey background color */
+    color: #333; /* Text color */
+    border-radius: 50px; /* Oval-shaped border radius */
+    padding: 2px 8px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.ReactTags__remove {
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    border: none; /* Remove the border */
+    color: #888; /* Change the color to grey or your preferred color */
+}
+
+.ReactTags__remove:hover {
+    background-color: #e0e0e0; /* Lighter grey on hover */
+}
+
+.ReactTags__tagInput {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.ReactTags__suggestions {
+    border: 1px solid #ced4da;
+    background-color: #fff;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.ReactTags__activeSuggestion {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.ReactTags__suggestionText {
+    padding: 5px;
+}
+
+/* Custom styles for the Add button */
+.add-button {
+    margin-top: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background-color: #0056b3;
+}
