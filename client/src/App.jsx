@@ -33,9 +33,6 @@ const handleDeleteProduct = async (product) => {
           const errorData = await response.json();
           throw new Error(`Failed to delete the product: ${errorData.error}`);
         }
-    
-        // If the deletion was successful, return a success message or any relevant data
-        // return { success: true, message: 'Product deleted successfully' };
 
         const updatedProducts = products.filter((existingProduct) =>
             existingProduct.productId !== product.productId
