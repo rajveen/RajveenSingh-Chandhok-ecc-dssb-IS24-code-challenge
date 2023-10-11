@@ -53,18 +53,37 @@ const handleCreateProduct = async (product) => {
 }
 
 const handleUpdateProduct = async (product) => {
-    // Perform the edit operation and update the products state
-    const updatedProducts = products.map((existingProduct) =>
-        existingProduct.productId === product.productId ? product : existingProduct
-    );
-    setProducts(updatedProducts);
-    // call handleModalClose if no error
-    handleModalClose();
+    try {
+        const response = await fetch(`http://localhost:3000/api/products/${product.productId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(product),
+        });
+    
+        if (!response.ok) {
+            // If the response status is not in the range 200-299, consider it an error
+            const errorMessage = `Failed to update the product: ${response.statusText}`;
+            throw new Error(errorMessage);
+        }
+    
+        const updatedProduct = await response.json();
+
+        // Perform the edit operation and update the products state
+        const updatedProducts = products.map((existingProduct) =>
+            existingProduct.productId === updatedProduct.productId ? updatedProduct : existingProduct
+        );
+        setProducts(updatedProducts);
+
+        // call handleModalClose if no error
+        handleModalClose();
+    } catch (error) {
+        // Handle and log the error
+        console.error(error);
+        throw error; // Re-throw the error for further handling or display
+    }
 };
 
   const handleSaveProduct = async (product) => {
-    // const existingProductIds = products.map(existingProduct => existingProduct.productId)
-    // if (existingProductIds.includes(product.productId)) {
     if ("productId" in product) {
         await handleUpdateProduct(product);
     } else {

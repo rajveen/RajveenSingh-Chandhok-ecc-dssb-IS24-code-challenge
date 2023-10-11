@@ -4,7 +4,6 @@ import Modal from 'react-bootstrap/Modal';
 import DatePicker from 'react-datepicker';
 import { WithContext as ReactTags } from 'react-tag-input';
 import "./developer.css";
-import { generateUniqueID } from "./productHelper";
 
 const ProductModal = ({ showModal, product, onSave, onClose }) => {
     const [editedProduct, setEditedProduct] = useState(product);
@@ -30,26 +29,12 @@ const ProductModal = ({ showModal, product, onSave, onClose }) => {
             [name]: value})
     };
 
-    // const addProductIdToProduct = (product) => {
-    //     if (!product.productId) {
-    //         const id = generateUniqueID()
-    //         return {
-    //             ...product,
-    //             productId: id
-    //         }
-    //     }
-    //     return product
-    // }
-
     const handleSave = async () => {
         // Include updated developers in the edited product data
         let updatedProduct = {
             ...editedProduct,
             developers: developers?.map((tag) => tag.text),
         };
-
-        // // add unique Id to product
-        // updatedProduct = addProductIdToProduct(updatedProduct)
 
         // Call a function to save the edited product data
         try {
