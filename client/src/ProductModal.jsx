@@ -56,7 +56,7 @@ const ProductModal = ({ showModal, product, onSave, onClose }) => {
     return (
         <Modal show={showModal || product !== undefined} onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Edit Product</Modal.Title>
+                <Modal.Title>{product ? "Edit Product" : "Add Product"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 { renderError() }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProductTable from "./ProductTable";
 import ProductModal from './ProductModal';
+import HealthCheck from "./health/HealthCheck";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -21,11 +22,31 @@ function App() {
     setShowModal(true);
 };
 
-const handleDeleteProduct = (product) => {
-  const updatedProducts = products.filter((existingProduct) =>
-      existingProduct.productId !== product.productId
-  );
-  setProducts(updatedProducts);
+const handleDeleteProduct = async (product) => {
+    try {
+        const response = await fetch(`http://localhost:3000/api/products/${product.productId}`, {
+          method: 'DELETE',
+        });
+    
+        if (!response.ok) {
+          // If the response status is not in the range 200-299, consider it an error
+          const errorData = await response.json();
+          throw new Error(`Failed to delete the product: ${errorData.error}`);
+        }
+    
+        // If the deletion was successful, return a success message or any relevant data
+        // return { success: true, message: 'Product deleted successfully' };
+
+        const updatedProducts = products.filter((existingProduct) =>
+            existingProduct.productId !== product.productId
+        );
+        setProducts(updatedProducts);
+      } catch (error) {
+        console.error(error);
+        throw error; // Re-throw the error for further handling or display
+      }
+
+  
 };
 
 const handleCreateProduct = async (product) => {
@@ -46,9 +67,8 @@ const handleCreateProduct = async (product) => {
         setProducts((products) => [...products, newProduct]);
         setShowModal(false);
     } catch (error) {
-        // Handle and log the error
         console.error(error);
-        throw error; // Re-throw the error for further handling or display
+        throw new Error("Error in saving the product");
     }
 }
 
@@ -77,9 +97,8 @@ const handleUpdateProduct = async (product) => {
         // call handleModalClose if no error
         handleModalClose();
     } catch (error) {
-        // Handle and log the error
         console.error(error);
-        throw error; // Re-throw the error for further handling or display
+        throw new Error("Error in updating the product");
     }
 };
 
@@ -101,24 +120,29 @@ const handleModalClose = () => {
   setShowModal(false);
 }
 
-  return <div className="container">
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h1>Product Table</h1>
-        <button type="button" className="btn btn-primary" onClick={handleAddProduct}>Add New Product</button>
-    </div>
-    <ProductTable
-      products={products}
-      handleDeleteProduct={handleDeleteProduct}
-      // setSelectedProduct={setSelectedProduct}
-      handleEditProduct={handleEditProduct}
-    />,
-    {showModal && <ProductModal
-      showModal={showModal}
-      product={selectedProduct}
-      onSave={handleSaveProduct}
-      onClose={handleModalClose}
-  />}
-  </div>
+    return <>
+        <HealthCheck />
+        <div className="container">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h1>Product Table</h1>
+                <button type="button" className="btn btn-primary" onClick={handleAddProduct}>Add New Product</button>
+            </div>
+            <ProductTable
+                products={products}
+                handleDeleteProduct={handleDeleteProduct}
+                // setSelectedProduct={setSelectedProduct}
+                handleEditProduct={handleEditProduct}
+            />
+            {   showModal && 
+                <ProductModal
+                    showModal={showModal}
+                    product={selectedProduct}
+                    onSave={handleSaveProduct}
+                    onClose={handleModalClose}
+                />
+            }
+        </div>
+        </>
 }
 
 export default App;
