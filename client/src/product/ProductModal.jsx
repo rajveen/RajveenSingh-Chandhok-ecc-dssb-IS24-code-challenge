@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import DatePicker from 'react-datepicker';
 import { WithContext as ReactTags } from 'react-tag-input';
-import "./productModal.css";
+import './productModal.css';
 
 const ProductModal = ({ showModal, product, onSave, onClose }) => {
     const [editedProduct, setEditedProduct] = useState(product);

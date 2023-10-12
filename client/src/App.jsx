@@ -2,17 +2,24 @@ import React, { useState, useEffect } from "react";
 import ProductTable from "./product/ProductTable";
 import ProductModal from './product/ProductModal';
 import HealthCheck from "./health/HealthCheck";
+import SearchBar from "./SearchBar";
+import _ from "lodash";
+import "./app.css";
 
 function App() {
+    const [allProducts, setAllProducts] = useState([]);
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState();
     const [showModal, setShowModal] = useState(false);
+    const [scrumMasterSearchTerm, setScrumMasterSearchTerm] = useState("");
+    const [developerSearchTerm, setDeveloperSearchTerm] = useState("");
 
     useEffect(() => {
         const fetchProductData = async () => {
             const response = await fetch("http://localhost:3000/api/products");
             const data = await response.json();
-            setProducts(data.products);
+            setAllProducts(_.cloneDeep(data.products));
+            setProducts(_.cloneDeep(data.products));
         }
 
         fetchProductData();
@@ -113,12 +120,51 @@ function App() {
         setShowModal(false);
     }
 
+    const onScrumMasterSearch = searchTerm => {
+        setDeveloperSearchTerm("");
+        setScrumMasterSearchTerm(searchTerm);
+        if (searchTerm === "") {
+            setProducts(allProducts);
+        } else {
+            const filteredProducts = allProducts.filter(
+                (product) => product.scrumMasterName.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setProducts(filteredProducts);
+        }
+    }
+
+    const onDeveloperSearch = searchTerm => {
+        setScrumMasterSearchTerm("");
+        setDeveloperSearchTerm(searchTerm);
+        if (searchTerm === "") {
+            setProducts(allProducts);
+        } else {
+            const filteredProducts = allProducts.filter(
+                (product) => product.developers.some(developer => developer.toLowerCase().includes(searchTerm.toLowerCase()))
+            );
+            setProducts(filteredProducts);
+        }
+    }
+
+    const onClearSearch = () => {
+        setScrumMasterSearchTerm("");
+        setDeveloperSearchTerm("");
+        setProducts(allProducts);
+    }
+
     return <>
         <HealthCheck />
         <div className="container">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className="product-heading">
                 <h1>Products Table</h1>
                 <button type="button" className="btn btn-primary" onClick={handleAddProduct}>Add New Product</button>
+            </div>
+            <div className="search-product">
+                <SearchBar searchType="Scrum Master" searchTerm={scrumMasterSearchTerm} onSearch={onScrumMasterSearch}/>
+                <SearchBar searchType="Developer" searchTerm={developerSearchTerm} onSearch={onDeveloperSearch}/>
+                <button className="btn btn-warning" onClick={onClearSearch}>
+                    Clear Search
+                </button>
             </div>
             <ProductTable
                 products={products}

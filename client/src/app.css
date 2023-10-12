@@ -1,0 +1,17 @@
+.container {
+    margin-top: 30px;
+}
+
+.product-heading {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    margin: 30px 0;
+}
+
+.search-product { 
+    display: flex; 
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 30px; 
+}
