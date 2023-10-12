@@ -1,7 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Table from 'react-bootstrap/Table';
 
 const ProductTable = ({ products, handleEditProduct, handleDeleteProduct}) => {
+    const handleProductNameClick = (e, product) => {
+        handleEditProduct(product);
+        e.preventDefault();
+    }
+
     return <> 
         <div>
             <p>Number of products: {products.length}</p>
@@ -25,7 +30,7 @@ const ProductTable = ({ products, handleEditProduct, handleDeleteProduct}) => {
                 <tr key={product.productId}>
                     <td>{index+1}</td>
                     <td>
-                        <a href="#edit" onClick={() => handleEditProduct(product)}>
+                        <a href="#edit" onClick={(e) => handleProductNameClick(e, product)}>
                             {product.productName}
                         </a>
                     </td>
@@ -51,7 +56,7 @@ const ProductTable = ({ products, handleEditProduct, handleDeleteProduct}) => {
             ))}
             </tbody>
         </Table>
-        </>
+    </>
 };
 
 export default ProductTable;
