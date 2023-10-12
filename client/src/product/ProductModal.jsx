@@ -22,9 +22,6 @@ const ProductModal = ({ showModal, product, onSave, onClose }) => {
             ...editedProduct,
             [name]: value,
         });
-        console.log({
-            ...editedProduct,
-            [name]: value})
     };
 
     const handleSave = async (e) => {
