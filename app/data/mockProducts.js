@@ -13,14 +13,13 @@ function createRandomProduct() {
             faker.person.fullName(),
         ],
         scrumMasterName: faker.person.fullName(),
-        startDate: faker.date.past({ years: 5 }),
+        startDate: faker.date.past({ years: 5 }).toISOString().split('T')[0], // Format as yyyy-MM-dd,
         methodology: faker.helpers.arrayElement(['Agile', 'Waterfall']),
         location: faker.internet.url({ appendSlash: true }),
     };
 }
 
 let products = faker.helpers.multiple(createRandomProduct, { count: 5 });
-
 
 export default function getMockProducts() {
     return products;

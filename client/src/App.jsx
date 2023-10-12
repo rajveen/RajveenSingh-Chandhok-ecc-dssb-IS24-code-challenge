@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ProductTable from "./ProductTable";
-import ProductModal from './ProductModal';
+import ProductTable from "./product/ProductTable";
+import ProductModal from './product/ProductModal';
 import HealthCheck from "./health/HealthCheck";
 
 function App() {
@@ -121,7 +121,7 @@ const handleModalClose = () => {
         <HealthCheck />
         <div className="container">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <h1>Product Table</h1>
+                <h1>Products Table</h1>
                 <button type="button" className="btn btn-primary" onClick={handleAddProduct}>Add New Product</button>
             </div>
             <ProductTable
