@@ -19,7 +19,7 @@ function createRandomProduct() {
     };
 }
 
-let products = faker.helpers.multiple(createRandomProduct, { count: 5 });
+let products = faker.helpers.multiple(createRandomProduct, { count: 40 });
 
 export default function getMockProducts() {
     return products;
