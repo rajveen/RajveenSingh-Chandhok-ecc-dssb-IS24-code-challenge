@@ -44,6 +44,13 @@ The frontend server will start at `http://localost:5000/`.
 
 3. Open your web browser and visit `http://localhost:5000/` to access the React app.
 
+## Features
+
+1. User Story 1-5 completed
+2. Sending mock data from the server
+3. Error handling in case of error from the server
+4. Checks periodically if server is running or not
+
 ## Contributing
 Feel free to contribute to this project by submitting issues and pull requests.
 
